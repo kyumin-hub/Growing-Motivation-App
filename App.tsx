@@ -70,7 +70,6 @@ export default function App() {
       }));
       
       setMissions(prev => {
-        // Avoid duplicates if strictly needed, but simple append is okay for prototype
         const existingTexts = new Set(prev.map(m => m.text));
         const filteredNew = formatMissions.filter(m => !existingTexts.has(m.text));
         return [...prev, ...filteredNew];
@@ -177,7 +176,7 @@ export default function App() {
   };
 
   const renderHome = () => (
-    <div className="flex flex-col h-full overflow-y-auto pb-24">
+    <div className="flex flex-col h-full overflow-y-auto pb-32">
       <header className="px-6 py-6 flex justify-between items-center bg-white/50 backdrop-blur-sm sticky top-0 z-10">
         <div>
           <h1 className="text-2xl font-bold text-stone-800 flex items-center gap-2">
@@ -234,7 +233,7 @@ export default function App() {
   );
 
   const renderMissions = () => (
-    <div className="flex flex-col h-full overflow-y-auto pb-24 px-6 pt-6">
+    <div className="flex flex-col h-full overflow-y-auto pb-32 px-6 pt-6">
        <h2 className="text-2xl font-bold text-stone-800 mb-2">오늘의 미션</h2>
        <p className="text-stone-500 mb-6">작은 성공들이 모여 숲을 이룰 거예요.</p>
        <div className="space-y-3">
@@ -261,7 +260,7 @@ export default function App() {
   );
 
   const renderStudy = () => (
-    <div className="flex flex-col h-full overflow-y-auto pb-24 px-6 pt-6">
+    <div className="flex flex-col h-full overflow-y-auto pb-32 px-6 pt-6">
       <header className="mb-6">
         <h2 className="text-2xl font-bold text-stone-800 mb-2 flex items-center gap-2">
           <BookOpen className="text-blue-500" /> 공부 기록
@@ -335,7 +334,7 @@ export default function App() {
   );
 
   const renderCommunity = () => (
-    <div className="flex flex-col h-full overflow-y-auto pb-24 px-6 pt-6">
+    <div className="flex flex-col h-full overflow-y-auto pb-32 px-6 pt-6">
       <h2 className="text-2xl font-bold text-stone-800 mb-2">서로의 온기</h2>
       <p className="text-stone-500 mb-6">따뜻한 말 한마디가 큰 힘이 됩니다.</p>
       
@@ -380,7 +379,7 @@ export default function App() {
        </div>
 
        {/* Tab Bar */}
-       <nav className="bg-white border-t border-stone-100 px-2 py-2 flex justify-around items-center absolute bottom-0 w-full z-20 pb-safe">
+       <nav className="bg-white border-t border-stone-100 px-2 pt-2 flex justify-around items-center absolute bottom-0 w-full z-20 pb-[calc(0.5rem+env(safe-area-inset-bottom))]">
           <button 
             onClick={() => setActiveTab('HOME')}
             className={`flex flex-col items-center p-2 rounded-lg transition-colors ${activeTab === 'HOME' ? 'text-green-600' : 'text-stone-400'}`}
@@ -410,7 +409,7 @@ export default function App() {
             className={`flex flex-col items-center p-2 rounded-lg transition-colors ${activeTab === 'COMMUNITY' ? 'text-green-600' : 'text-stone-400'}`}
           >
             <MessageCircleHeart className="w-6 h-6 mb-1" />
-            <span className="text-[10px]">소통</span>
+            <span className="text-[10px]">온기</span>
           </button>
 
           <button 
@@ -418,7 +417,7 @@ export default function App() {
             className={`flex flex-col items-center p-2 rounded-lg transition-colors ${activeTab === 'PLANNING' ? 'text-green-600' : 'text-stone-400'}`}
           >
             <FileText className="w-6 h-6 mb-1" />
-            <span className="text-[10px]">기획안</span>
+            <span className="text-[10px]">기획</span>
           </button>
        </nav>
      </div>
