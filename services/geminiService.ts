@@ -1,7 +1,11 @@
 import { GoogleGenAI } from "@google/genai";
 
-// Initialize Gemini
-const ai = new GoogleGenAI({ apiKey: process.env.API_KEY });
+// Initialize Gemini safely
+// This ensures the app doesn't crash if process.env is undefined in some browser environments
+const apiKey = (typeof process !== 'undefined' && process.env) ? process.env.API_KEY : '';
+
+// Create AI instance only if key exists, otherwise we'll handle gracefully in functions
+const ai = apiKey ? new GoogleGenAI({ apiKey }) : null;
 
 const MODEL_NAME = 'gemini-2.5-flash';
 
@@ -9,6 +13,10 @@ const MODEL_NAME = 'gemini-2.5-flash';
  * Generates a warm, short encouraging message.
  */
 export const getWarmMessage = async (userContext: string): Promise<string> => {
+  if (!ai) {
+    return "오늘 하루도 당신은 충분히 잘하고 있어요.";
+  }
+  
   try {
     const response = await ai.models.generateContent({
       model: MODEL_NAME,
@@ -30,6 +38,13 @@ export const getWarmMessage = async (userContext: string): Promise<string> => {
  * Generates 3 very easy micro-missions based on user mood.
  */
 export const getSuggestedMissions = async (): Promise<string[]> => {
+  // Fallback defaults if AI is not configured or fails
+  const defaults = ["물 한 모금 마시기", "기지개 켜기", "창문 열어보기"];
+  
+  if (!ai) {
+    return defaults;
+  }
+
   try {
     const response = await ai.models.generateContent({
       model: MODEL_NAME,
@@ -50,7 +65,7 @@ export const getSuggestedMissions = async (): Promise<string[]> => {
     if (Array.isArray(missions)) {
       return missions.slice(0, 3);
     }
-    return ["물 한 모금 마시기", "기지개 켜기", "창문 열어보기"];
+    return defaults;
   } catch (error) {
     console.error("Gemini Mission Error:", error);
     return ["물 한 모금 마시기", "눈 감고 10초 쉬기", "손가락 스트레칭 하기"];
